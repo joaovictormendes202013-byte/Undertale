@@ -112,24 +112,23 @@ function final() {
 
         setTimeout(() => {
 
-            // 🧹 some com o texto
             texto.textContent = "";
-
-            // 💀 mostra GIF
             sans.src = "sans.gif";
 
-            // 🔊 som final
-            const audioFinal = new Audio("final.mp3");
-            audioFinal.volume = 0.5;
-            audioFinal.play().catch(() => {});
+            // 🔊 primeiro som
+            const finalAudio = new Audio("final.mp3");
+            finalAudio.volume = 0.5;
 
-            // ⏱️ tempo do GIF rodar 1 vez
-            setTimeout(() => {
+            finalAudio.play().catch(() => {});
 
-                // 👻 remove o GIF da tela
-                sans.style.display = "none";
+            // 💀 quando o primeiro som terminar, toca Fallen Down
+            finalAudio.onended = () => {
 
-            }, 2600); // ajuste esse tempo conforme seu GIF
+                const fallen = new Audio("fallen_down.mp3");
+                fallen.volume = 0.5;
+                fallen.play().catch(() => {});
+
+            };
 
         }, 1200);
 
