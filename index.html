@@ -110,18 +110,24 @@ function final() {
 
     digitar("DEVERIAM QUEIMAR NO INFERNO", () => {
 
-        // ⏱️ pequeno intervalo antes do caos final
         setTimeout(() => {
 
-            // troca para GIF
+            // 🧹 tira o texto da tela
+            texto.textContent = "";
+
+            // 💀 troca para GIF
             sans.src = "sans.gif";
 
-            // som final junto
+            // 🔊 som final junto
             const audioFinal = new Audio("final.mp3");
             audioFinal.volume = 0.5;
             audioFinal.play().catch(() => {});
 
-        }, 1200); // 👈 intervalo (1.2 segundos)
+            // ⛔ impede qualquer texto reaparecer
+            texto.style.display = "none";
+
+        }, 1200);
+
     });
 }
 
