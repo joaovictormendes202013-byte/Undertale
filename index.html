@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Sans</title>
+
+<style>
+    body {
+        margin: 0;
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        color: white;
+        font-family: Arial;
+    }
+
+    #container {
+        text-align: center;
+    }
+
+    img {
+        width: 250px;
+        image-rendering: pixelated;
+    }
+
+    #texto {
+        margin-top: 20px;
+        font-size: 18px;
+        max-width: 400px;
+    }
+</style>
+</head>
+<body>
+
+<div id="container">
+    <img src="sans.png" id="sans">
+    <div id="texto"></div>
+</div>
+
+<script>
+// frases
+const frases = [
+    "heya.",
+    "it's a beautiful day outside.",
+    "you're gonna have a bad time."
+];
+
+let i = 0;
+const texto = document.getElementById("texto");
+
+// sequência de falas
+function proximaFrase() {
+    if (i < frases.length) {
+        texto.style.color = "white";
+        texto.innerText = frases[i];
+        i++;
+        setTimeout(proximaFrase, 2000);
+    } else {
+        mensagemFinal();
+    }
+}
+
+// mensagem final vermelha
+function mensagemFinal() {
+    texto.style.color = "red";
+    texto.style.fontSize = "22px";
+    texto.innerText = "YOU REALLY MADE A BAD CHOICE.";
+}
+
+// iniciar
+setTimeout(proximaFrase, 1000);
+</script>
+
+</body>
+</html>
