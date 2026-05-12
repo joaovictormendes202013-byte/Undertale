@@ -112,19 +112,24 @@ function final() {
 
         setTimeout(() => {
 
-            // 🧹 tira o texto da tela
+            // 🧹 some com o texto
             texto.textContent = "";
 
-            // 💀 troca para GIF
+            // 💀 mostra GIF
             sans.src = "sans.gif";
 
-            // 🔊 som final junto
+            // 🔊 som final
             const audioFinal = new Audio("final.mp3");
             audioFinal.volume = 0.5;
             audioFinal.play().catch(() => {});
 
-            // ⛔ impede qualquer texto reaparecer
-            texto.style.display = "none";
+            // ⏱️ tempo do GIF rodar 1 vez
+            setTimeout(() => {
+
+                // 👻 remove o GIF da tela
+                sans.style.display = "none";
+
+            }, 2600); // ajuste esse tempo conforme seu GIF
 
         }, 1200);
 
