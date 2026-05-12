@@ -5,50 +5,37 @@
 <title>Sans</title>
 
 <style>
-    body {
-        margin: 0;
-        background: black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        flex-direction: column;
-        font-family: "Comic Sans MS", cursive;
-        color: white;
-    }
+body {
+    margin: 0;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    font-family: "Comic Sans MS", cursive;
+    color: white;
+}
 
-    img {
-        width: 250px;
-        image-rendering: pixelated;
-    }
+img {
+    width: 250px;
+    image-rendering: pixelated;
+}
 
-    #texto {
-        margin-top: 20px;
-        font-size: 20px;
-        max-width: 500px;
-        min-height: 60px;
-        white-space: pre-wrap; /* 🔥 mantém espaços corretamente */
-        text-align: center;
-    }
-
-    /* botão invisível pra liberar áudio */
-    #start {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        cursor: pointer;
-    }
+#texto {
+    margin-top: 20px;
+    font-size: 20px;
+    max-width: 500px;
+    min-height: 60px;
+    white-space: pre-wrap; /* garante espaços */
+    text-align: center;
+}
 </style>
 </head>
 <body>
 
-<button id="start"></button>
-
 <img src="sans.png" id="sans">
 <div id="texto"></div>
-
-<audio id="som" src="type_sound.mp3"></audio>
 
 <script>
 
@@ -59,52 +46,38 @@ const frases = [
 ];
 
 let i = 0;
-
 const texto = document.getElementById("texto");
-const som = document.getElementById("som");
 const sans = document.getElementById("sans");
-const startBtn = document.getElementById("start");
 
-let iniciado = false;
+// 🔊 som confiável
+function playSound() {
+    const audio = new Audio("type_sound.mp3");
+    audio.volume = 0.3;
+    audio.play().catch(() => {});
+}
 
-// 🔓 libera áudio (obrigatório no navegador)
-startBtn.addEventListener("click", () => {
-    if (iniciado) return;
-    iniciado = true;
-
-    som.play().then(() => {
-        som.pause();
-        som.currentTime = 0;
-    });
-
-    startBtn.style.display = "none";
-
-    proximaFrase();
-});
-
-// ✍️ digitação correta (COM ESPAÇOS)
+// ✍️ digitação CORRETA
 function digitar(frase, callback) {
-    texto.innerText = "";
+
+    texto.textContent = ""; // 🔥 IMPORTANTE
     let j = 0;
 
     function escrever() {
         if (j < frase.length) {
 
             const char = frase[j];
-            texto.innerText += char;
 
-            // 🔊 som só em letras (não em espaço)
+            texto.textContent += char; // 🔥 preserva espaço
+
             if (char !== " ") {
-                const clone = som.cloneNode();
-                clone.volume = 0.3;
-                clone.play();
+                playSound();
             }
 
             j++;
-            setTimeout(escrever, 60);
+            setTimeout(escrever, 55);
 
         } else {
-            setTimeout(callback, 1200);
+            setTimeout(callback, 1000);
         }
     }
 
@@ -127,7 +100,7 @@ function proximaFrase() {
     }
 }
 
-// final vermelho + troca de sprite
+// final
 function final() {
 
     sans.src = "sans2.png";
@@ -137,6 +110,11 @@ function final() {
 
     digitar("DEVERIAM QUEIMAR NO INFERNO", () => {});
 }
+
+// 🔥 START AUTOMÁTICO COM CLIQUE (OBRIGATÓRIO PRA SOM)
+document.body.addEventListener("click", () => {
+    proximaFrase();
+}, { once: true });
 
 </script>
 
