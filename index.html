@@ -14,7 +14,7 @@
         height: 100vh;
         flex-direction: column;
         color: white;
-        font-family: Arial;
+        font-family: "Comic Sans MS", Comic Sans, cursive;
     }
 
     #container {
@@ -28,8 +28,9 @@
 
     #texto {
         margin-top: 20px;
-        font-size: 18px;
-        max-width: 400px;
+        font-size: 20px;
+        max-width: 500px;
+        min-height: 60px;
     }
 </style>
 </head>
@@ -41,6 +42,7 @@
 </div>
 
 <script>
+
 // frases
 const frases = [
     "Está um dia lindo lá fora.",
@@ -50,28 +52,54 @@ const frases = [
 
 let i = 0;
 const texto = document.getElementById("texto");
+const sans = document.getElementById("sans");
+
+// efeito de digitação
+function digitar(textoCompleto, callback) {
+    texto.innerText = "";
+    let j = 0;
+
+    function escrever() {
+        if (j < textoCompleto.length) {
+            texto.innerText += textoCompleto[j];
+            j++;
+            setTimeout(escrever, 60); // velocidade da digitação
+        } else {
+            setTimeout(callback, 1200);
+        }
+    }
+
+    escrever();
+}
 
 // sequência de falas
 function proximaFrase() {
     if (i < frases.length) {
         texto.style.color = "white";
-        texto.innerText = frases[i];
-        i++;
-        setTimeout(proximaFrase, 2000);
+        digitar(frases[i], () => {
+            i++;
+            proximaFrase();
+        });
     } else {
         mensagemFinal();
     }
 }
 
-// mensagem final vermelha
+// final
 function mensagemFinal() {
+
+    // troca de sprite
+    sans.src = "sans2.png";
+
     texto.style.color = "red";
-    texto.style.fontSize = "22px";
-    texto.innerText = "DEVERIAM QUEIMAR NO INFERNO";
+    texto.style.fontSize = "24px";
+
+    digitar("DEVERIAM QUEIMAR NO INFERNO", () => {});
 }
 
 // iniciar
 setTimeout(proximaFrase, 1000);
+
 </script>
 
 </body>
