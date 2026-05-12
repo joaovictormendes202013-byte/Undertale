@@ -13,12 +13,8 @@
         align-items: center;
         height: 100vh;
         flex-direction: column;
+        font-family: "Comic Sans MS", cursive;
         color: white;
-        font-family: "Comic Sans MS", Comic Sans, cursive;
-    }
-
-    #container {
-        text-align: center;
     }
 
     img {
@@ -31,39 +27,50 @@
         font-size: 20px;
         max-width: 500px;
         min-height: 60px;
+        white-space: pre-wrap; /* 🔥 mantém espaços e quebras */
     }
 </style>
 </head>
 <body>
 
-<div id="container">
-    <img src="sans.png" id="sans">
-    <div id="texto"></div>
-</div>
+<img src="sans.png" id="sans">
+<div id="texto"></div>
+
+<audio id="som" src="type_sound.mp3"></audio>
 
 <script>
 
-// frases
 const frases = [
-    "Está um lindo dia lá fora.",
+    "Está um dia lindo lá fora.",
     "Os pássaros cantam, as flores florescem...",
     "Em dias como estes, crianças como você..."
 ];
 
 let i = 0;
 const texto = document.getElementById("texto");
+const som = document.getElementById("som");
 const sans = document.getElementById("sans");
 
-// efeito de digitação
-function digitar(textoCompleto, callback) {
+// digitação corrigida
+function digitar(frase, callback) {
     texto.innerText = "";
     let j = 0;
 
     function escrever() {
-        if (j < textoCompleto.length) {
-            texto.innerText += textoCompleto[j];
+        if (j < frase.length) {
+
+            const char = frase[j];
+            texto.innerText += char;
+
+            // 🔊 som mais leve (evita bug)
+            if (char !== " ") {
+                som.currentTime = 0;
+                som.play();
+            }
+
             j++;
-            setTimeout(escrever, 60); // velocidade da digitação
+            setTimeout(escrever, 60);
+
         } else {
             setTimeout(callback, 1200);
         }
@@ -72,23 +79,25 @@ function digitar(textoCompleto, callback) {
     escrever();
 }
 
-// sequência de falas
+// sequência
 function proximaFrase() {
     if (i < frases.length) {
+
         texto.style.color = "white";
+
         digitar(frases[i], () => {
             i++;
             proximaFrase();
         });
+
     } else {
-        mensagemFinal();
+        final();
     }
 }
 
-// final
-function mensagemFinal() {
+// final vermelho + sprite trocado
+function final() {
 
-    // troca de sprite
     sans.src = "sans2.png";
 
     texto.style.color = "red";
@@ -97,7 +106,7 @@ function mensagemFinal() {
     digitar("DEVERIAM QUEIMAR NO INFERNO", () => {});
 }
 
-// iniciar
+// start
 setTimeout(proximaFrase, 1000);
 
 </script>
