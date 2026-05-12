@@ -103,20 +103,25 @@ function proximaFrase() {
 // final
 function final() {
 
-    // troca sprite por GIF
-    sans.src = "sans.gif";
+    sans.src = "sans2.png";
 
-    // texto final
     texto.style.color = "red";
     texto.style.fontSize = "24px";
 
     digitar("DEVERIAM QUEIMAR NO INFERNO", () => {
 
-        // 🔊 som final ao mesmo tempo
-        const audioFinal = new Audio("final.mp3");
-        audioFinal.volume = 0.5;
-        audioFinal.play().catch(() => {});
+        // ⏱️ pequeno intervalo antes do caos final
+        setTimeout(() => {
 
+            // troca para GIF
+            sans.src = "sans.gif";
+
+            // som final junto
+            const audioFinal = new Audio("final.mp3");
+            audioFinal.volume = 0.5;
+            audioFinal.play().catch(() => {});
+
+        }, 1200); // 👈 intervalo (1.2 segundos)
     });
 }
 
