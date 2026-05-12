@@ -27,11 +27,23 @@
         font-size: 20px;
         max-width: 500px;
         min-height: 60px;
-        white-space: pre-wrap; /* 🔥 mantém espaços e quebras */
+        white-space: pre-wrap; /* 🔥 mantém espaços corretamente */
+        text-align: center;
+    }
+
+    /* botão invisível pra liberar áudio */
+    #start {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
     }
 </style>
 </head>
 <body>
+
+<button id="start"></button>
 
 <img src="sans.png" id="sans">
 <div id="texto"></div>
@@ -47,11 +59,30 @@ const frases = [
 ];
 
 let i = 0;
+
 const texto = document.getElementById("texto");
 const som = document.getElementById("som");
 const sans = document.getElementById("sans");
+const startBtn = document.getElementById("start");
 
-// digitação corrigida
+let iniciado = false;
+
+// 🔓 libera áudio (obrigatório no navegador)
+startBtn.addEventListener("click", () => {
+    if (iniciado) return;
+    iniciado = true;
+
+    som.play().then(() => {
+        som.pause();
+        som.currentTime = 0;
+    });
+
+    startBtn.style.display = "none";
+
+    proximaFrase();
+});
+
+// ✍️ digitação correta (COM ESPAÇOS)
 function digitar(frase, callback) {
     texto.innerText = "";
     let j = 0;
@@ -62,10 +93,11 @@ function digitar(frase, callback) {
             const char = frase[j];
             texto.innerText += char;
 
-            // 🔊 som mais leve (evita bug)
+            // 🔊 som só em letras (não em espaço)
             if (char !== " ") {
-                som.currentTime = 0;
-                som.play();
+                const clone = som.cloneNode();
+                clone.volume = 0.3;
+                clone.play();
             }
 
             j++;
@@ -95,7 +127,7 @@ function proximaFrase() {
     }
 }
 
-// final vermelho + sprite trocado
+// final vermelho + troca de sprite
 function final() {
 
     sans.src = "sans2.png";
@@ -105,9 +137,6 @@ function final() {
 
     digitar("DEVERIAM QUEIMAR NO INFERNO", () => {});
 }
-
-// start
-setTimeout(proximaFrase, 1000);
 
 </script>
 
